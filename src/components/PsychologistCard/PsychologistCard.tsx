@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Heart, Star } from "lucide-react";
 import type { Psychologist } from "../../types/types";
+import AppointmentModal from "../AppointmentModal";
 
 type Props = {
   psychologist: Psychologist;
@@ -14,6 +15,8 @@ const PsychologistCard = ({
   onToggleFavorite,
 }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
+
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mb-6 transition-all hover:shadow-md">
       <div className="flex flex-col md:flex-row gap-6">
@@ -132,7 +135,10 @@ const PsychologistCard = ({
 
               {/* Action Button */}
               <div className="flex justify-start">
-                <button className="bg-[#54be96] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#45a884] transition-colors shadow-lg shadow-[#54be96]/20">
+                <button
+                  onClick={() => setIsAppointmentOpen(true)}
+                  className="bg-[#54be96] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#45a884] transition-colors shadow-lg shadow-[#54be96]/20"
+                >
                   Make an appointment
                 </button>
               </div>
@@ -147,6 +153,16 @@ const PsychologistCard = ({
           )}
         </div>
       </div>
+      {isAppointmentOpen && (
+        <AppointmentModal
+          isOpen={isAppointmentOpen}
+          onClose={() => setIsAppointmentOpen(false)}
+          psychologist={{
+            name: psychologist.name,
+            avatarUrl: psychologist.avatarUrl,
+          }}
+        />
+      )}
     </div>
   );
 };
