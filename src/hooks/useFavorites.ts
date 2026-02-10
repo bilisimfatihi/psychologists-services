@@ -22,7 +22,7 @@ export const useFavorites = () => {
       setLoading(true);
       try {
         const ids = await getFavoritePsychologistIds(user.uid);
-        setFavoriteIds(ids);
+        setFavoriteIds(Array.isArray(ids) ? ids : []);
       } catch (error) {
         console.error("Failed to load favorites", error);
       } finally {
