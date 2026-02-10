@@ -1,5 +1,5 @@
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase/firestore";
+import { db } from "../firebase/config";
 import psychologists from "../data/psychologists.json";
 
 export const seedPsychologists = async () => {

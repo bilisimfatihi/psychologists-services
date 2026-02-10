@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPsychologists } from "../../firebase/firestore";
+import { getPsychologists } from "../../firebase/psychologists";
 import type { Psychologist } from "../../types/types";
 import PsychologistList from "../../components/PsychologistList/PsychologistList";
 

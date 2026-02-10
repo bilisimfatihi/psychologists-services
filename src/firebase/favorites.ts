@@ -7,7 +7,7 @@ import {
   where,
   Timestamp,
 } from "firebase/firestore";
-import { db } from "./firestore";
+import { db } from "./config";
 
 export const addFavorite = async (
   userId: string,

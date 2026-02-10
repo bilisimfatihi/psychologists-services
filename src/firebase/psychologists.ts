@@ -1,8 +1,6 @@
-import { getFirestore, getDocs, collection } from "firebase/firestore";
-import { firebaseApp } from "./config";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "./config";
 import type { Psychologist } from "../types/types";
-
-export const db = getFirestore(firebaseApp);
 
 export const getPsychologists = async (): Promise<Psychologist[]> => {
   const querySnapshot = await getDocs(collection(db, "psychologists"));
