@@ -1,73 +1,109 @@
-# React + TypeScript + Vite
+# Psychologists Services
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a web app for a psychologists service company.
 
-Currently, two official plugins are available:
+Users can:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- see psychologists
+- read psychologist details
+- open appointment form
+- register and login
+- add/remove favorites
+- see favorites on a private page
 
-## React Compiler
+## Live Demo
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- Demo link: `to be added`
 
-## Expanding the ESLint configuration
+## Current Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 3 pages:
+  - Home
+  - Psychologists
+  - Favorites (private)
+- Routing with React Router
+- Firebase Authentication:
+  - register
+  - login
+  - logout
+  - keep user session
+- Forms with `react-hook-form` and `yup`:
+  - Login form
+  - Register form
+  - Appointment form
+- Psychologist card:
+  - basic info
+  - Read more section
+  - reviews
+  - Make an appointment button
+- Favorites:
+  - add/remove with heart button
+  - load user favorites from Firebase
+  - show favorites list on Favorites page
+- Modal close actions:
+  - close button
+  - click on backdrop
+  - `Esc` key
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Next Steps
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- sorting on Psychologists page:
+  - A-Z / Z-A
+  - price low-high / high-low
+  - popularity low-high / high-low
+- load more logic (first 3 cards, then more)
+- warning message for unauthorized favorite click
+- add final deploy link and screenshots
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Tech Stack
+
+- React
+- TypeScript
+- Vite
+- React Router
+- Firebase (Auth + Firestore)
+- React Hook Form
+- Yup
+- Tailwind CSS
+
+## Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in project root:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_FIREBASE_API_KEY=...
+VITE_FIREBASE_AUTH_DOMAIN=...
+VITE_FIREBASE_PROJECT_ID=...
+VITE_FIREBASE_STORAGE_BUCKET=...
+VITE_FIREBASE_MESSAGING_SENDER_ID=...
+VITE_FIREBASE_APP_ID=...
+```
+
+## Run Commands
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
+```
+
+## Project Structure
+
+```text
+src/
+  components/
+  context/
+  firebase/
+  hooks/
+  pages/
+  router/
+  schemas/
+  types/
 ```
