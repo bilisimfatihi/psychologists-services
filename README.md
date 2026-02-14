@@ -11,10 +11,6 @@ Users can:
 - add/remove favorites
 - see favorites on a private page
 
-## Live Demo
-
-- Demo link: `to be added`
-
 ## Current Features
 
 - 3 pages:
@@ -44,16 +40,15 @@ Users can:
   - close button
   - click on backdrop
   - `Esc` key
-
-## Next Steps
-
-- sorting on Psychologists page:
+- Filtering and Sorting:
   - A-Z / Z-A
-  - price low-high / high-low
-  - popularity low-high / high-low
-- load more logic (first 3 cards, then more)
-- warning message for unauthorized favorite click
-- add final deploy link and screenshots
+  - Price (Low-High / High-Low)
+  - Popularity
+  - Price filtering (<100$ / >100$)
+- Pagination:
+  - Load more logic for psychologist list
+- User Experience:
+  - Warning/Error notifications (Toast) for unauthorized actions
 
 ## Tech Stack
 
