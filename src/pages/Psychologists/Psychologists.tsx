@@ -1,42 +1,21 @@
-import { useEffect, useState } from "react";
-import { getPsychologists } from "../../firebase/psychologists";
-import type { Psychologist } from "../../types/types";
+import { useState } from "react";
+import type { SortOption } from "../../types/types";
 import PsychologistList from "../../components/PsychologistList/PsychologistList";
+import Filters from "../../components/Filters";
+import LoadMoreButton from "../../components/LoadMoreButton";
+import { usePaginatedPsychologists } from "../../hooks/usePaginatedPsychologists";
 
 const Psychologists = () => {
-  const [psychologists, setPsychologists] = useState<Psychologist[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<SortOption>("A to Z");
 
-  useEffect(() => {
-    const fetchPsychologists = async () => {
-      try {
-        const data = await getPsychologists();
-        setPsychologists(data);
-      } catch (err) {
-        setError(
-          "Psikologlar yüklenemedi" +
-            (err instanceof Error ? `: ${err.message}` : ""),
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPsychologists();
-  }, []);
-
-  if (loading) {
-    return <p className="text-center mt-10">Yükleniyor...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center text-red-500 mt-10">{error}</p>;
-  }
+  const { data, loading, hasMore, loadMore } =
+    usePaginatedPsychologists(activeFilter);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <PsychologistList psychologists={psychologists} />
+      <Filters activeFilter={activeFilter} onChange={setActiveFilter} />
+      <PsychologistList psychologists={data} />
+      <LoadMoreButton loading={loading} hasMore={hasMore} onClick={loadMore} />
     </div>
   );
 };

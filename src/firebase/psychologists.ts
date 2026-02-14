@@ -1,17 +1,75 @@
 import {
   collection,
+  documentId,
   getDocs,
   query,
   where,
-  documentId,
+  orderBy,
+  limit,
+  startAfter,
+  DocumentSnapshot,
+  QueryConstraint,
 } from "firebase/firestore";
 import { db } from "./config";
-import type { Psychologist } from "../types/types";
+import type { Psychologist, SortOption } from "../types/types";
 
-export const getPsychologists = async (): Promise<Psychologist[]> => {
-  const querySnapshot = await getDocs(collection(db, "psychologists"));
+type GetPsychologistsParams ={
+  lastDoc?: DocumentSnapshot | null;
+  filter: SortOption;
+  pageSize: number;
+}
 
-  return querySnapshot.docs.map(doc => ({
+export const getPsychologists = async ({
+  lastDoc = null,
+  filter,
+  pageSize,
+}: GetPsychologistsParams) => {
+  const constraints: QueryConstraint[] = [];
+  const psychologistsRef = collection(db, "psychologists");
+  
+  switch (filter) {
+    case "A to Z":
+      constraints.push(orderBy("name", "asc"));
+      break;
+
+    case "Z to A":
+      constraints.push(orderBy("name", "desc"));
+      break;
+
+    case "Popular":
+      constraints.push(orderBy("rating", "desc"));
+      break;
+
+    case "Not popular":
+      constraints.push(orderBy("rating", "asc"));
+      break;
+
+    case "Less than 10$":
+      constraints.push(where("price_per_hour", "<", 10));
+      constraints.push(orderBy("price_per_hour", "asc"));
+      break;
+
+    case "Greater than 10$":
+      constraints.push(where("price_per_hour", ">", 10));
+      constraints.push(orderBy("price_per_hour", "asc"));
+      break;
+
+    case "Show all":
+    default:
+      constraints.push(orderBy("name", "asc"));
+      break;
+  }
+
+  if (lastDoc) {
+    constraints.push(startAfter(lastDoc));
+  }
+
+  constraints.push(limit(pageSize));
+
+  const q = query(psychologistsRef, ...constraints);
+ const snapshot = await getDocs(q);
+
+  const psychologists = snapshot.docs.map((doc) => ({
     id: doc.id,
     name: doc.data().name,
     avatarUrl: doc.data().avatar_url,
@@ -24,6 +82,12 @@ export const getPsychologists = async (): Promise<Psychologist[]> => {
     about: doc.data().about,
     reviews: doc.data().reviews ?? [],
   })) as Psychologist[];
+
+  return {
+    psychologists,
+    lastDoc: snapshot.docs[snapshot.docs.length - 1] ?? null,
+    hasMore: snapshot.docs.length === pageSize,
+  };
 };
 
 export const getPsychologistsByIds = async (

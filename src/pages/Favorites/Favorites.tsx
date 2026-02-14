@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../../context/AuthContext";
 import { getFavoritePsychologistIds } from "../../firebase/favorites";
 import { getPsychologistsByIds } from "../../firebase/psychologists";
-import type { Psychologist } from "../../types/types";
+import type { Psychologist, SortOption } from "../../types/types";
 import PsychologistList from "../../components/PsychologistList";
+import Filters from "../../components/Filters";
+import LoadMoreButton from "../../components/LoadMoreButton";
+import { useClientPagination } from "../../hooks/useClientPagination";
+import { sortPsychologists } from "../../utils/sortPsychologists";
 
 const FavoritesPage = () => {
   const { user } = useAuthContext();
   const [psychologists, setPsychologists] = useState<Psychologist[]>([]);
+  const [activeFilter, setActiveFilter] = useState<SortOption>("A to Z");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,6 +40,23 @@ const FavoritesPage = () => {
     loadFavorites();
   }, [user]);
 
+  const {
+    data: paginatedPsychologists,
+    loadMore,
+    hasMore,
+    resetPagination,
+  } = useClientPagination({
+    data: psychologists,
+    pageSize: 3,
+    sortOption: activeFilter,
+    sortFunction: sortPsychologists,
+  });
+
+  // Filter değişince pagination reset
+  useEffect(() => {
+    resetPagination();
+  }, [activeFilter, resetPagination]);
+
   if (loading) {
     return <div className="text-center py-10">Loading favorites...</div>;
   }
@@ -51,7 +73,9 @@ const FavoritesPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <PsychologistList psychologists={psychologists} />
+      <Filters activeFilter={activeFilter} onChange={setActiveFilter} />
+      <PsychologistList psychologists={paginatedPsychologists} />
+      <LoadMoreButton loading={loading} hasMore={hasMore} onClick={loadMore} />
     </div>
   );
 };

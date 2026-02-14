@@ -17,3 +17,5 @@ export type Psychologist = {
   initialConsultation: string;
   about: string;
 }
+
+export type SortOption = 'A to Z' | 'Z to A' | 'Less than 10$' | 'Greater than 10$' | 'Popular' | 'Not popular' | 'Show all';
