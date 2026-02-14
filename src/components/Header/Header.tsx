@@ -34,9 +34,11 @@ const Header = () => {
             <NavLink to="/psychologists" className={linkClass}>
               Psychologists
             </NavLink>
-            <NavLink to="/favorites" className={linkClass}>
-              Favorites
-            </NavLink>
+            {!loading && user && (
+              <NavLink to="/favorites" className={linkClass}>
+                Favorites
+              </NavLink>
+            )}
           </nav>
           <div className="flex items-center gap-3">
             {!loading && !user && (
