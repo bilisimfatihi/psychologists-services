@@ -1,5 +1,7 @@
 import { Outlet } from "react-router-dom";
-import Header from "../Header";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Header from "../Header/Header";
 
 const Layout = () => {
   return (
@@ -8,6 +10,7 @@ const Layout = () => {
       <main className="flex-1 max-w-7xl mx-auto px-4 py-6">
         <Outlet />
       </main>
+      <ToastContainer position="top-center" />
     </div>
   );
 };

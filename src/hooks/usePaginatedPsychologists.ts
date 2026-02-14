@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { DocumentSnapshot } from "firebase/firestore";
 import { getPsychologists } from "../firebase/psychologists";
 import type { Psychologist, SortOption } from "../types/types";
+import { toast } from "react-toastify";
 
 const PAGE_SIZE = 3;
 
@@ -31,7 +32,7 @@ export const usePaginatedPsychologists = (filter: SortOption) => {
       setLastDoc(newLastDoc);
       setHasMore(hasMore);
     } catch (error) {
-      console.error(error);
+      toast.error("Failed to load psychologists.");
     } finally {
       setLoading(false);
     }

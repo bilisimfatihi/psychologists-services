@@ -32,7 +32,6 @@ const AppointmentModal = ({ isOpen, onClose, psychologist }: Props) => {
   });
 
   const onSubmit = async (data: AppointmentFormValues) => {
-    console.log("Appointment data:", data);
     onClose();
   };
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   addFavorite,
   removeFavorite,
@@ -24,7 +25,7 @@ export const useFavorites = () => {
         const ids = await getFavoritePsychologistIds(user.uid);
         setFavoriteIds(Array.isArray(ids) ? ids : []);
       } catch (error) {
-        console.error("Failed to load favorites", error);
+        toast.error("Failed to load favorites.");
       } finally {
         setLoading(false);
       }
@@ -34,22 +35,25 @@ export const useFavorites = () => {
   }, [user]);
 
   const toggleFavorite = async (psychologistId: string) => {
-    if (!user) return;
+    if (!user) {
+      toast.warn("Please log in to add to favorites.");
+      return;
+    }
 
     const isFavorite = favoriteIds.includes(psychologistId);
 
     try {
       if (isFavorite) {
         await removeFavorite(user.uid, psychologistId);
-        setFavoriteIds(prev =>
-          prev.filter(id => id !== psychologistId)
-        );
+        setFavoriteIds((prev) => prev.filter((id) => id !== psychologistId));
+        toast.success("Removed from favorites.");
       } else {
         await addFavorite(user.uid, psychologistId);
-        setFavoriteIds(prev => [...prev, psychologistId]);
+        setFavoriteIds((prev) => [...prev, psychologistId]);
+        toast.success("Added to favorites.");
       }
     } catch (error) {
-      console.error("Failed to toggle favorite", error);
+      toast.error("Failed to toggle favorite.");
     }
   };
 

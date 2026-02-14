@@ -8,6 +8,7 @@ import Filters from "../../components/Filters";
 import LoadMoreButton from "../../components/LoadMoreButton";
 import { useClientPagination } from "../../hooks/useClientPagination";
 import { sortPsychologists } from "../../utils/sortPsychologists";
+import { toast } from "react-toastify/unstyled";
 
 const FavoritesPage = () => {
   const { user } = useAuthContext();
@@ -31,7 +32,7 @@ const FavoritesPage = () => {
         const data = await getPsychologistsByIds(ids);
         setPsychologists(data);
       } catch (error) {
-        console.error("Failed to load favorites", error);
+        toast.error("Failed to load favorites.");
       } finally {
         setLoading(false);
       }
