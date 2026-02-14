@@ -13,7 +13,7 @@ import {
 import { db } from "./config";
 import type { Psychologist, SortOption } from "../types/types";
 
-type GetPsychologistsParams ={
+type GetPsychologistsParams = {
   lastDoc?: DocumentSnapshot | null;
   filter: SortOption;
   pageSize: number;
@@ -26,7 +26,7 @@ export const getPsychologists = async ({
 }: GetPsychologistsParams) => {
   const constraints: QueryConstraint[] = [];
   const psychologistsRef = collection(db, "psychologists");
-  
+
   switch (filter) {
     case "A to Z":
       constraints.push(orderBy("name", "asc"));
@@ -34,6 +34,14 @@ export const getPsychologists = async ({
 
     case "Z to A":
       constraints.push(orderBy("name", "desc"));
+      break;
+
+    case "Price: Low to High":
+      constraints.push(orderBy("price_per_hour", "asc"));
+      break;
+
+    case "Price: High to Low":
+      constraints.push(orderBy("price_per_hour", "desc"));
       break;
 
     case "Popular":
@@ -44,13 +52,13 @@ export const getPsychologists = async ({
       constraints.push(orderBy("rating", "asc"));
       break;
 
-    case "Less than 10$":
-      constraints.push(where("price_per_hour", "<", 10));
+    case "Less than 100$":
+      constraints.push(where("price_per_hour", "<", 100));
       constraints.push(orderBy("price_per_hour", "asc"));
       break;
 
-    case "Greater than 10$":
-      constraints.push(where("price_per_hour", ">", 10));
+    case "Greater than 100$":
+      constraints.push(where("price_per_hour", ">", 100));
       constraints.push(orderBy("price_per_hour", "asc"));
       break;
 
@@ -67,7 +75,7 @@ export const getPsychologists = async ({
   constraints.push(limit(pageSize));
 
   const q = query(psychologistsRef, ...constraints);
- const snapshot = await getDocs(q);
+  const snapshot = await getDocs(q);
 
   const psychologists = snapshot.docs.map((doc) => ({
     id: doc.id,

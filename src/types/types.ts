@@ -18,4 +18,4 @@ export type Psychologist = {
   about: string;
 }
 
-export type SortOption = 'A to Z' | 'Z to A' | 'Less than 10$' | 'Greater than 10$' | 'Popular' | 'Not popular' | 'Show all';
+export type SortOption = 'A to Z' | 'Z to A' | 'Price: Low to High' | 'Price: High to Low' | 'Popular' | 'Not popular' | 'Less than 100$' | 'Greater than 100$' | 'Show all';

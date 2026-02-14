@@ -34,11 +34,13 @@ const Filters = ({ activeFilter, onChange }: FiltersProps) => {
                 [
                   "A to Z",
                   "Z to A",
-                  "Less than 10$",
-                  "Greater than 10$",
+                  "Price: Low to High",
+                  "Price: High to Low",
                   "Popular",
                   "Not popular",
-                  "Show all",
+                  "Less than 100$",
+                  "Greater than 100$",
+                  "Show all",                  
                 ] as SortOption[]
               ).map((option) => (
                 <button
