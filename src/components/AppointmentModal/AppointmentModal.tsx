@@ -31,7 +31,7 @@ const AppointmentModal = ({ isOpen, onClose, psychologist }: Props) => {
     mode: "onTouched",
   });
 
-  const onSubmit = async (data: AppointmentFormValues) => {
+  const onSubmit = async (_data: AppointmentFormValues) => {
     onClose();
   };
 
