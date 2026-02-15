@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { appointmentSchema } from "../../schemas/appointment.schema";
 import BaseModal from "../BaseModal";
+import { toast } from "react-toastify";
 
 type AppointmentFormValues = {
   name: string;
@@ -32,6 +33,7 @@ const AppointmentModal = ({ isOpen, onClose, psychologist }: Props) => {
   });
 
   const onSubmit = async (_data: AppointmentFormValues) => {
+    toast.success("Your appointment request has been sent successfully!");
     onClose();
   };
 
