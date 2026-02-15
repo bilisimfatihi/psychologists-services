@@ -1,6 +1,8 @@
-import type { Psychologist } from "../../types/types";
+import { useCallback, useState } from "react";
 import PsychologistCard from "../PsychologistCard/PsychologistCard";
+import AppointmentModal from "../AppointmentModal";
 import { useFavorites } from "../../hooks/useFavorites";
+import type { Psychologist } from "../../types/types";
 
 type Props = {
   psychologists: Psychologist[];
@@ -10,9 +12,22 @@ type Props = {
 const PsychologistList = ({ psychologists, onToggleFavorite }: Props) => {
   const { isFavorite, toggleFavorite } = useFavorites();
 
-  const handleToggleFavorite = (id: string) => {
+  const handleToggleFavorite = useCallback((id: string) => {
     toggleFavorite(id);
     onToggleFavorite?.(id);
+  }, [toggleFavorite, onToggleFavorite]);
+
+  const [selectedPsychologist, setSelectedPsychologist] = useState<Psychologist | null>(null);
+  const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
+
+  const handleOpenAppointment = useCallback((psychologist: Psychologist) => {
+    setSelectedPsychologist(psychologist);
+    setIsAppointmentOpen(true);
+  }, []);
+
+  const handleCloseAppointment = () => {
+    setIsAppointmentOpen(false);
+    setSelectedPsychologist(null);
   };
 
   return (
@@ -23,8 +38,20 @@ const PsychologistList = ({ psychologists, onToggleFavorite }: Props) => {
           psychologist={psychologist}
           isFavorite={isFavorite(psychologist.id)}
           onToggleFavorite={handleToggleFavorite}
+          onOpenAppointment={() => handleOpenAppointment(psychologist)}
         />
       ))}
+
+      {isAppointmentOpen && selectedPsychologist && (
+        <AppointmentModal
+          isOpen={isAppointmentOpen}
+          onClose={handleCloseAppointment}
+          psychologist={{
+            name: selectedPsychologist.name,
+            avatarUrl: selectedPsychologist.avatarUrl,
+          }}
+        />
+      )}
     </div>
   );
 };

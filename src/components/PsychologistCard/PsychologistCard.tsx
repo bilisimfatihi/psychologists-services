@@ -1,21 +1,21 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Heart, Star } from "lucide-react";
 import type { Psychologist } from "../../types/types";
-import AppointmentModal from "../AppointmentModal";
 
 type Props = {
   psychologist: Psychologist;
   isFavorite?: boolean;
   onToggleFavorite?: (id: string) => void;
+  onOpenAppointment?: () => void;
 };
 
 const PsychologistCard = ({
   psychologist,
   isFavorite,
   onToggleFavorite,
+  onOpenAppointment,
 }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
 
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mb-6 transition-all hover:shadow-md">
@@ -26,6 +26,7 @@ const PsychologistCard = ({
             <img
               src={psychologist.avatarUrl}
               alt={psychologist.name}
+              loading="lazy"
               className="w-full h-full object-cover rounded-2xl"
             />
           </div>
@@ -109,8 +110,8 @@ const PsychologistCard = ({
             <div className="mt-8 pt-8 border-t border-gray-100 space-y-8 animate-in fade-in slide-in-from-top-4 duration-300">
               {/* Reviews Section */}
               <div className="space-y-6">
-                {psychologist.reviews.map((review) => (
-                  <div className="space-y-2">
+                {psychologist.reviews.map((review, index) => (
+                  <div key={index} className="space-y-2">
                     <div className="flex gap-4">
                       <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-[#54be96] font-bold">
                         {review.reviewer.charAt(0).toUpperCase()}
@@ -136,7 +137,7 @@ const PsychologistCard = ({
               {/* Action Button */}
               <div className="flex justify-start">
                 <button
-                  onClick={() => setIsAppointmentOpen(true)}
+                  onClick={onOpenAppointment}
                   className="bg-[#54be96] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#45a884] transition-colors shadow-lg shadow-[#54be96]/20"
                 >
                   Make an appointment
@@ -153,18 +154,8 @@ const PsychologistCard = ({
           )}
         </div>
       </div>
-      {isAppointmentOpen && (
-        <AppointmentModal
-          isOpen={isAppointmentOpen}
-          onClose={() => setIsAppointmentOpen(false)}
-          psychologist={{
-            name: psychologist.name,
-            avatarUrl: psychologist.avatarUrl,
-          }}
-        />
-      )}
     </div>
   );
 };
 
-export default PsychologistCard;
+export default React.memo(PsychologistCard);

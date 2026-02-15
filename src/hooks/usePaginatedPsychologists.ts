@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { DocumentSnapshot } from "firebase/firestore";
 import { getPsychologists } from "../firebase/psychologists";
 import type { Psychologist, SortOption } from "../types/types";
@@ -12,7 +12,7 @@ export const usePaginatedPsychologists = (filter: SortOption) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchPage = async (loadMore = false) => {
+  const fetchPage = useCallback(async (loadMore = false) => {
     if (loading) return;
 
     setLoading(true);
@@ -36,7 +36,7 @@ export const usePaginatedPsychologists = (filter: SortOption) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [loading, lastDoc, filter]);
 
   // filter değişince reset
   useEffect(() => {
