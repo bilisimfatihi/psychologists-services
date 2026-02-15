@@ -4,10 +4,16 @@ import { useFavorites } from "../../hooks/useFavorites";
 
 type Props = {
   psychologists: Psychologist[];
+  onToggleFavorite?: (id: string) => void;
 };
 
-const PsychologistList = ({ psychologists }: Props) => {
+const PsychologistList = ({ psychologists, onToggleFavorite }: Props) => {
   const { isFavorite, toggleFavorite } = useFavorites();
+
+  const handleToggleFavorite = (id: string) => {
+    toggleFavorite(id);
+    onToggleFavorite?.(id);
+  };
 
   return (
     <div className="space-y-6">
@@ -16,7 +22,7 @@ const PsychologistList = ({ psychologists }: Props) => {
           key={psychologist.id}
           psychologist={psychologist}
           isFavorite={isFavorite(psychologist.id)}
-          onToggleFavorite={toggleFavorite}
+          onToggleFavorite={handleToggleFavorite}
         />
       ))}
     </div>

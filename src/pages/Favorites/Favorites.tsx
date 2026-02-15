@@ -72,10 +72,17 @@ const FavoritesPage = () => {
     );
   }
 
+  const handleRemoveFavorite = (id: string) => {
+    setPsychologists((prev) => prev.filter((p) => p.id !== id));
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Filters activeFilter={activeFilter} onChange={setActiveFilter} />
-      <PsychologistList psychologists={paginatedPsychologists} />
+      <PsychologistList
+        psychologists={paginatedPsychologists}
+        onToggleFavorite={handleRemoveFavorite}
+      />
       <LoadMoreButton loading={loading} hasMore={hasMore} onClick={loadMore} />
     </div>
   );
